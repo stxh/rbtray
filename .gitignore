@@ -19,4 +19,6 @@
 *.tlog
 *.user
 *.FileListAbsolute.txt
+*.dll
+*.exe
 !/**/RBTray.exe
