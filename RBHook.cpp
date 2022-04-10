@@ -42,18 +42,30 @@ LRESULT CALLBACK MouseProc(int nCode, WPARAM wParam, LPARAM lParam) {
             if (info->wHitTestCode == HTCLIENT) {
                 //DEBUG_PRINTF("%s(%d): ignoring client hit test code for non-client message\n", __FUNCTION__, __LINE__);
             } else {
+                // To minimize a program to the system tray, you can use any of these methods:
+                //   - Right - click with the mouse on the program's minimize button.
+                //   - Hold the Shift key while Right - clicking on the program's title bar.
+                // To pin a program on top most, you can use these methods:
+                //   - Right - click with the mouse on the program's maximize button.
+                //   - Hold the Ctrl key while Right - clicking on the program's title bar.
+                //
+
                 BOOL shiftKeyDown = (GetKeyState(VK_SHIFT) & 0x8000) ? TRUE : FALSE;
+                BOOL ctrlKeyDown = (GetKeyState(VK_CONTROL) & 0x8000) ? TRUE : FALSE;
                 BOOL isHit = (info->wHitTestCode == HTMINBUTTON) || ((info->wHitTestCode == HTCAPTION) && shiftKeyDown);
+                BOOL isPinHit = (info->wHitTestCode == HTMAXBUTTON) || ((info->wHitTestCode == HTCAPTION) && ctrlKeyDown);
+
                 //DEBUG_PRINTF("%s(%d): shift %s, hit %s\n", __FUNCTION__, __LINE__, shiftKeyDown ? "yes" : "no", isHit ? "yes" : "no");
-                if ((wParam == WM_NCRBUTTONDOWN) && isHit) {
+                if ((wParam == WM_NCRBUTTONDOWN) && (isHit || isPinHit)) {
                     //DEBUG_PRINTF("%s(%d): down hit\n", __FUNCTION__, __LINE__);
                     _hLastHit = info->hwnd;
                     return 1;
-                } else if ((wParam == WM_NCRBUTTONUP) && isHit) {
+                } else if ((wParam == WM_NCRBUTTONUP) && (isHit || isPinHit)) {
                     //DEBUG_PRINTF("%s(%d): up hit\n", __FUNCTION__, __LINE__);
+                    UINT uMsg = isHit ? WM_ADDTRAY : WM_TOPMOST;
                     if (info->hwnd == _hLastHit) {
                         //DEBUG_PRINTF("%s(%d): up hit match\n", __FUNCTION__, __LINE__);
-                        PostMessage(FindWindow(NAME, NAME), WM_ADDTRAY, 0, (LPARAM)info->hwnd);
+                        PostMessage(FindWindow(NAME, NAME), uMsg, 0, (LPARAM)info->hwnd);
                     }
                     _hLastHit = NULL;
                     return 1;

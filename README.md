@@ -40,6 +40,12 @@ To minimize a program to the system tray, you can use any of these methods:
 - Hold the Shift key while Right-clicking on the program's title bar.
 - Pressing Windows-Alt-Control-Down on the keyboard (all at the same time).
 
+To pin a program on top most, you can use these methods:
+
+- Right - click with the mouse on the program's maximize button.
+- Hold the Ctrl key while Right - clicking on the program's title bar.
+
+
 This should create an icon for the window in the system tray. To restore the
 program's window, single-click the program's icon in the tray. Alternatively,
 you can Right-click on the tray icon which should bring up a popup menu, then

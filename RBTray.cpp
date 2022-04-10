@@ -90,6 +90,11 @@ static bool AddWindowToTray(HWND hwnd) {
     return AddToTray(i);
 }
 
+// New add funtion to set the window on top
+static bool SetTopMostWindow(HWND hwnd) {
+    return SetWindowPos(hwnd, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE);
+}
+
 static void MinimizeWindowToTray(HWND hwnd) {
     // Don't minimize MDI child windows
     if ((UINT)GetWindowLongPtr(hwnd, GWL_EXSTYLE) & WS_EX_MDICHILD) {
@@ -249,6 +254,9 @@ LRESULT CALLBACK HookWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) 
             break;
         case WM_ADDTRAY:
             MinimizeWindowToTray((HWND)lParam);
+            break;
+        case WM_TOPMOST:
+            SetTopMostWindow((HWND)lParam);
             break;
         case WM_REMTRAY:
             RestoreWindowFromTray((HWND)lParam);
