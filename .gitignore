@@ -1,6 +1,6 @@
 #/ipch
 /.vs
-/afxres.h
+#/afxres.h
 *.aps
 *.cache
 *.db
@@ -21,4 +21,4 @@
 *.FileListAbsolute.txt
 *.dll
 *.exe
-!/**/RBTray.exe
+/x64
